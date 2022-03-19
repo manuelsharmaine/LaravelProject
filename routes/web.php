@@ -22,69 +22,87 @@ Route::get('/intro', function() {
 }); 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
-Route::redirect('/contact-us', '/');
-
-//uri, filename, data
-Route::view('/index','welcome', ['name' => 'John Doe']);
-
-
-//route params
-Route::get('/user/{id}', function($id){
-    return 'User Id: '.$id;
-});
-
-
-Route::get('/post/{post}/comments/{comment}', function($postID, $commentID){
-    return 'PostID: '.$postID. ' - Comment ID: '.$commentID;
-});
-
-
-//route params + DI
-Route::get('/user/{id}', function(Request $request, $id){
-    return 'User: '.$id. 'Request: ' .$request;
-});
-
-//optional params route + pattern
-Route::get('/username/{name?}', function($name = ''){
-    return $name;
-})->where('name', '[a-z]+');
-
-
-Route::get('/user/profile', function(){
-        return 'profile';
-})->name('profile');
-
-
-
-Route::prefix('/admin')->group(function(){
-    Route::get('/dashboard',function(){
-        return 'dashboard';
-    }); 
-    Route::get('/reports',function(){
-        return 'reports';
-    }); 
-    Route::get('/user-management',function(){
-        return 'user-manamgent';
-    }); 
-});
-
-
-Route::get('/users/{user}', function(User $user){
-    return $user;
-});
-
-//404
-Route::fallback(function(){
-    return 'No Page available';
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::get('/users', [App\Http\Controllers\UserController::class, 'index']);
+Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create']);
+Route::post('/users', [App\Http\Controllers\UserController::class, 'store']);
+Route::resource('/posts', App\Http\Controllers\PostController::class);
+Route::get('/', [App\Http\Controllers\PageController::class, 'index']);
+Route::get('/about', [App\Http\Controllers\PageController::class, 'about']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Route::redirect('/contact-us', '/');
+
+// //uri, filename, data
+// Route::view('/index','welcome', ['name' => 'John Doe']);
+
+
+// //route params
+// Route::get('/user/{id}', function($id){
+//     return 'User Id: '.$id;
+// });
+
+
+// Route::get('/post/{post}/comments/{comment}', function($postID, $commentID){
+//     return 'PostID: '.$postID. ' - Comment ID: '.$commentID;
+// });
+
+
+// //route params + DI
+// Route::get('/user/{id}', function(Request $request, $id){
+//     return 'User: '.$id. 'Request: ' .$request;
+// });
+
+// //optional params route + pattern
+// Route::get('/username/{name?}', function($name = ''){
+//     return $name;
+// })->where('name', '[a-z]+');
+
+
+// Route::get('/user/profile', function(){
+//         return 'profile';
+// })->name('profile');
+
+
+
+// Route::prefix('/admin')->group(function(){
+//     Route::get('/dashboard',function(){
+//         return 'dashboard';
+//     }); 
+//     Route::get('/reports',function(){
+//         return 'reports';
+//     }); 
+//     Route::get('/user-management',function(){
+//         return 'user-manamgent';
+//     }); 
+// });
+
+
+// Route::get('/users/{user}', function(User $user){
+//     return $user;
+// });
+
+// //404
+// Route::fallback(function(){
+//     return 'No Page available';
+// });
