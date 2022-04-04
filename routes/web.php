@@ -38,6 +38,10 @@ Route::post('/users', [App\Http\Controllers\UserController::class, 'store']);
 Route::resource('/posts', App\Http\Controllers\PostController::class);
 Route::get('/', [App\Http\Controllers\PageController::class, 'index']);
 Route::get('/about', [App\Http\Controllers\PageController::class, 'about']);
+Route::get('/check-request', [App\Http\Controllers\PageController::class, 'checkRequest']);
+Route::get('/contact-us', [App\Http\Controllers\PageController::class, 'contactUs']);
+Route::post('/contacts', [App\Http\Controllers\PageController::class, 'submitContact']);
+
 
 
 
