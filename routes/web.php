@@ -42,7 +42,9 @@ Route::get('/check-request', [App\Http\Controllers\PageController::class, 'check
 Route::get('/contact-us', [App\Http\Controllers\PageController::class, 'contactUs']);
 Route::post('/contacts', [App\Http\Controllers\PageController::class, 'submitContact']);
 
-
+Route::prefix('admin')->group(function(){
+    Route::resource('/posts', App\Http\Controllers\Admin\PostController::class);
+});
 
 
 
