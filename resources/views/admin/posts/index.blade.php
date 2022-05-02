@@ -25,7 +25,7 @@
                     <td> {{ $post->id }} </td>
                     <td> {{ $post->title }} </td>
                     <td> {{ $post->description }} </td>
-                    <td> {{ $post->user_id }} </td>
+                    <td> {{ $post->user->name }} </td>
                     <td><a href="/admin/posts/{{ $post->id}}" class="btn btn-sm btn-info">View</a> 
                          <a href="/admin/posts/{{ $post->id}}/edit" class="btn  btn-sm btn-warning">Edit</a>
                          <form action="/admin/posts/{{$post->id}}" method="POST">

@@ -14,6 +14,11 @@ class Post extends Model
     // protected $table = 'tbl_posts';
     // protected $primaryKey = 'post_id';
 
+    protected $fillable = ['title','description']; //mass assignment 
+    protected $guarded = ['photo'];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -7,11 +7,16 @@
                 Create Post
             </div>
             <div class="card-body">
-                <form action="/admin/posts" method="POST">
+                <form action="/admin/posts" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Title</label>
                         <input type="text" value="{{old('title')}}" name="title" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Featured Image</label>
+                        <input type="file" name="photo" class="form-control">
                     </div>
 
                     <div class="mb-3">

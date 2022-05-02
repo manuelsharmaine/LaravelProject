@@ -23,7 +23,25 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Post::all();
+        //$posts = Post::all();
+
+        $user = User::find(Auth::id())->get();
+        $posts = $user->posts;
+
+        dd($posts);
+        $posts = Post::where('user_id', Auth::id())->get();
+
+        $chunk = $posts->chunk(2);
+        $count = $posts->count();
+        $filter = $posts->filter(function ($item) {
+            return $item->photo != 'default';
+        });
+        // $posts = $filter->all();
+
+        $group = $posts->groupBy('user_id');
+        $pluck = $posts->pluck('title');
+        $reverse = $posts->reverse();
+        $except = $posts->except([1]);
         // $posts = Post::onlyTrashed()->get();
       
         return view('admin.posts.index', compact('posts'));
@@ -48,12 +66,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    
+        $photo = $request->file('photo');
+        if($request->hasFile('photo')){
+            $filenameWithExt = $photo->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $photo->getClientOriginalExtension();
+            $image = $filename.'_'.time().'.'.$extension;
+            $path = $photo->storeAs('public/img', $image);
+        
+        }else{
+            $image = '';
+        }
+
+
 
         $post = new Post();
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->photo = 'default';
+        // $post->title = $request->title;
+        // $post->description = $request->description;
+        $post->fill($request->all());
+        $post->photo = $image;
         $post->user_id = Auth::id();
         $post->save();
 
@@ -100,8 +132,9 @@ class PostController extends Controller
         //
         // dd($request);
         $post = Post::find($id);
-        $post->title = $request->title;
-        $post->description = $request->description;
+        // $post->title = $request->title;
+        // $post->description = $request->description;
+        $post->fill($request->all());
         $post->save();
 
         return redirect('/admin/posts');
