@@ -43,6 +43,7 @@ Route::get('/contact-us', [App\Http\Controllers\PageController::class, 'contactU
 Route::post('/contacts', [App\Http\Controllers\PageController::class, 'submitContact']);
 
 Route::prefix('admin')->group(function(){
+    Route::post('/share-post/{id}', [App\Http\Controllers\Admin\PostController::class, 'sharePost']);
     Route::resource('/posts', App\Http\Controllers\Admin\PostController::class);
 });
 

@@ -7,6 +7,8 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SharePostMail;
 
 class PostController extends Controller
 {
@@ -23,13 +25,15 @@ class PostController extends Controller
     public function index()
     {
         //
-        //$posts = Post::all();
+        $posts = Post::all();
 
-        $user = User::find(Auth::id())->get();
-        $posts = $user->posts;
 
-        dd($posts);
+  
         $posts = Post::where('user_id', Auth::id())->get();
+        // dd($posts);
+        $posts = User::find(Auth::id())->posts;
+
+        // dd($posts);
 
         $chunk = $posts->chunk(2);
         $count = $posts->count();
@@ -67,6 +71,11 @@ class PostController extends Controller
     public function store(Request $request)
     {
     
+
+        $request->validate([
+            'title' => 'required|min:50'
+        ]);
+        
         $photo = $request->file('photo');
         if($request->hasFile('photo')){
             $filenameWithExt = $photo->getClientOriginalName();
@@ -152,5 +161,12 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->delete();
         return redirect('/admin/posts');
+    }
+
+    public function sharePost(Request $request, $id){    
+        $post = Post::find($id);
+        // dd($post);
+        Mail::to($request->email)->send(new SharePostMail($post));
+        return redirect()->back();
     }
 }

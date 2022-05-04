@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\Post;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +17,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('delete:post')->everyMinute();
+
+        // $schedule->call(function (){
+        //     // Post::where('deleted_at','!=', null)->delete();
+        //     DB::table('posts')->delete();
+        // })->everyMinute();
+
     }
 
     /**
